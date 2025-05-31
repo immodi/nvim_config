@@ -28,3 +28,10 @@ vim.cmd.colorscheme("gruvbox")
 
 -- Clipboard
 vim.opt.clipboard = "unnamedplus"
+
+
+vim.filetype.add({
+    extension = {
+        templ = "templ",
+    },
+})

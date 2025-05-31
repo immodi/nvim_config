@@ -53,7 +53,7 @@ return require("lazy").setup({
 
             require("mason").setup()
             require("mason-lspconfig").setup({
-                ensure_installed = { "lua_ls", "pyright" },
+                ensure_installed = { "lua_ls", "pyright", "templ" },
                 automatic_installation = true,
                 handlers = {
                     -- Default handler - automatically setup all installed servers with capabilities
@@ -82,6 +82,14 @@ return require("lazy").setup({
                             capabilities = capabilities,
                         })
                     end,
+
+                    ["templ"] = function()
+                        require("lspconfig").templ.setup({
+                            capabilities = capabilities,
+                            filetypes = { "templ" }, -- explicitly state supported filetypes
+                        })
+                    end,
+
                 }
             })
         end,
