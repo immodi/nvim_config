@@ -55,6 +55,7 @@ return require("lazy").setup({
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
+                    "tailwindcss",
                     "pyright",
                     "html",
                     "cssls",
@@ -70,6 +71,7 @@ return require("lazy").setup({
                             capabilities = capabilities,
                         })
                     end,
+
 
                     ["lua_ls"] = function()
                         require("lspconfig").lua_ls.setup({
