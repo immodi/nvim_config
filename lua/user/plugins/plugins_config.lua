@@ -24,7 +24,16 @@ cmp.setup({
 
 
 treesitterConfig.setup {
-    ensure_installed = { "lua", "python", "html", "templ" },
+    ensure_installed = {
+        "lua",
+        "python",
+        "html",
+        "templ",
+        "javascript",
+        "typescript",
+        "css",
+        "tsx",
+    },
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,

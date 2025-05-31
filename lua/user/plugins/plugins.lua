@@ -53,17 +53,24 @@ return require("lazy").setup({
 
             require("mason").setup()
             require("mason-lspconfig").setup({
-                ensure_installed = { "lua_ls", "pyright", "templ" },
+                ensure_installed = {
+                    "lua_ls",
+                    "pyright",
+                    "html",
+                    "cssls",
+                    "templ",
+                    "ts_ls",
+                    'eslint',
+                },
+
                 automatic_installation = true,
                 handlers = {
-                    -- Default handler - automatically setup all installed servers with capabilities
                     function(server_name)
                         require("lspconfig")[server_name].setup({
                             capabilities = capabilities,
                         })
                     end,
 
-                    -- Custom configurations for specific servers
                     ["lua_ls"] = function()
                         require("lspconfig").lua_ls.setup({
                             capabilities = capabilities,
@@ -77,19 +84,12 @@ return require("lazy").setup({
                         })
                     end,
 
-                    ["pyright"] = function()
-                        require("lspconfig").pyright.setup({
-                            capabilities = capabilities,
-                        })
-                    end,
-
                     ["templ"] = function()
                         require("lspconfig").templ.setup({
                             capabilities = capabilities,
                             filetypes = { "templ" }, -- explicitly state supported filetypes
                         })
                     end,
-
                 }
             })
         end,
@@ -99,12 +99,8 @@ return require("lazy").setup({
         "rachartier/tiny-code-action.nvim",
         dependencies = {
             { "nvim-lua/plenary.nvim" },
-
-            -- optional picker via telescope
             { "nvim-telescope/telescope.nvim" },
-            -- optional picker via fzf-lua
             { "ibhagwan/fzf-lua" },
-            -- .. or via snacks
             {
                 "folke/snacks.nvim",
                 opts = {
