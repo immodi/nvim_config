@@ -7,6 +7,9 @@ vim.o.updatetime = 1000
 -- jj to escape insert mode
 vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode with jj" })
 
+-- redo an action ctrl + u
+vim.keymap.set('n', '<C-u>', '<C-r>', { noremap = true })
+
 -- Telescope
 local ok, builtin = pcall(require, "telescope.builtin")
 if ok then
