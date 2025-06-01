@@ -89,7 +89,16 @@ vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', { noremap = true, silent = true })
 -- Move current line up with Alt + k
 vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', { noremap = true, silent = true })
 
+-- Move selected lines down with Alt + j (visual mode)
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
+
+-- Move selected lines up with Alt + k (visual mode)
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+
 -- Use Telescope for code actions
 vim.keymap.set("n", "<leader>ca", function()
     require("tiny-code-action").code_action()
 end, { noremap = true, silent = true })
+
+-- Select current line with v + v
+vim.keymap.set('n', 'vv', 'V', { desc = 'Select current line in visual mode' })
