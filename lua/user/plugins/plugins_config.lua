@@ -1,4 +1,5 @@
 require("user.plugins.telescope.telescope_config")
 require("user.plugins.treesitter.treesitter_config")
-
--- require("user.plugins.cmp.cmp_config")
+require("user.plugins.blink.blink_config")
+require("user.plugins.conform.conform_config")
+require("user.plugins.nvim_lsp.nvim_lsp_config")
