@@ -4,6 +4,9 @@ vim.opt.relativenumber = true
 
 vim.o.mouse = ""
 
+-- Set shorter CursorHold delay
+vim.o.updatetime = 1000
+
 -- Tabs & indentation
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -22,17 +25,19 @@ vim.opt.cursorline = true
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
 
---vim.cmd.colorscheme("kanagawa")
-vim.o.background = "dark"
-vim.cmd.colorscheme("gruvbox")
+vim.cmd([[colorscheme tokyonight-storm]])
 
 -- Clipboard
 vim.opt.clipboard = "unnamedplus"
 
-
-vim.filetype.add({
-    extension = {
-        templ = "templ",
-    },
+vim.lsp.enable({
+	"lua_ls", -- Lua (lua-language-server)
+	"pyright", -- Python
+	"html", -- HTML
+	"templ", -- Templ (templ)
+	"tsserver", -- JavaScript/TypeScript (typescript-language-server)
+	"tailwindcss", -- Tailwind CSS
+	"cssls", -- CSS (css-lsp)
+	"eslint", -- ESLint
+	"gopls", -- Go
 })
-

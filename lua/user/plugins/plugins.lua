@@ -1,116 +1,97 @@
-return require("lazy").setup({
-    -- Theme
-    -- { "rebelot/kanagawa.nvim",    lazy = false },
-    { "ellisonleao/gruvbox.nvim", lazy = false },
+return require("lazy").setup(
+	---@diagnostic disable-next-line: missing-fields
+	{
+		-- Theme
+		{
+			"folke/tokyonight.nvim",
+			lazy = false,
+			priority = 1000,
+			opts = {},
+		},
 
-    -- Status line
-    { "nvim-lualine/lualine.nvim" },
+		-- Status line
+		{
+			"nvim-lualine/lualine.nvim",
+			dependencies = { "nvim-tree/nvim-web-devicons" },
+		},
 
-    --File explorer
-    { "nvim-tree/nvim-tree.lua" },
+		-- Fuzzy finder
+		{
+			"nvim-telescope/telescope.nvim",
+			tag = "0.1.8",
+			dependencies = { "nvim-lua/plenary.nvim" },
+		},
 
-    -- Fuzzy finder
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" }
-    },
+		-- Treesitter
+		{
+			"nvim-treesitter/nvim-treesitter",
+			branch = "master",
+			lazy = false,
+			build = ":TSUpdate",
+		},
 
-    -- Treesitter
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate"
-    },
+		-- LSP Plugins
+		{
+			-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
+			-- used for completion, annotations and signatures of Neovim apis
+			"folke/lazydev.nvim",
+			ft = "lua",
+			opts = {
+				library = {
+					-- Load luvit types when the `vim.uv` word is found
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				},
+			},
+		},
+		{
+			-- Main LSP Configuration
+			"neovim/nvim-lspconfig",
+			dependencies = {
+				-- Automatically install LSPs and related tools to stdpath for Neovim
+				-- Mason must be loaded before its dependents so we need to set it up here.
+				-- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
+				{ "mason-org/mason.nvim", opts = {} },
+				"mason-org/mason-lspconfig.nvim",
+				"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-    -- Completion framework
-    {
-        "hrsh7th/nvim-cmp",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",     -- LSP completion source
-            "hrsh7th/cmp-buffer",       -- Buffer words completion
-            "hrsh7th/cmp-path",         -- Filesystem paths completion
-            "hrsh7th/cmp-cmdline",      -- Command line completion
-            "saadparwaiz1/cmp_luasnip", -- Snippet completions
-            "L3MON4D3/LuaSnip",         -- Snippet engine
-        }
-    },
+				-- Useful status updates for LSP.
+				{ "j-hui/fidget.nvim", opts = {} },
 
-    -- LSP configuration
-    { "neovim/nvim-lspconfig" },
+				-- Allows extra capabilities provided by blink.cmp
+				"saghen/blink.cmp",
+			},
+		},
 
-    -- Mason for managing LSP servers
-    {
-        "williamboman/mason.nvim",
-        build = ":MasonUpdate",
-        config = true,
-    },
+		{ -- Autoformat
+			"stevearc/conform.nvim",
+			event = { "BufWritePre" },
+			cmd = { "ConformInfo" },
+			keys = require("user.plugins.conform.conform_config").keys,
+			opts = require("user.plugins.conform.conform_config").opts,
+		},
 
-    -- Mason integration with lspconfig
-    {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
-        config = function()
-            local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-            require("mason").setup()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "lua_ls",
-                    "tailwindcss",
-                    "pyright",
-                    "html",
-                    "cssls",
-                    "templ",
-                    "ts_ls",
-                    'eslint',
-                },
-
-                automatic_installation = true,
-                handlers = {
-                    function(server_name)
-                        require("lspconfig")[server_name].setup({
-                            capabilities = capabilities,
-                        })
-                    end,
-
-
-                    ["lua_ls"] = function()
-                        require("lspconfig").lua_ls.setup({
-                            capabilities = capabilities,
-                            settings = {
-                                Lua = {
-                                    diagnostics = {
-                                        globals = { "vim" }, -- Recognize `vim` as a global
-                                    },
-                                }
-                            }
-                        })
-                    end,
-
-                    ["templ"] = function()
-                        require("lspconfig").templ.setup({
-                            capabilities = capabilities,
-                            filetypes = { "templ" }, -- explicitly state supported filetypes
-                        })
-                    end,
-                }
-            })
-        end,
-    },
-
-    {
-        "rachartier/tiny-code-action.nvim",
-        dependencies = {
-            { "nvim-lua/plenary.nvim" },
-            { "nvim-telescope/telescope.nvim" },
-            { "ibhagwan/fzf-lua" },
-            {
-                "folke/snacks.nvim",
-                opts = {
-                    terminal = {},
-                }
-            }
-        },
-        event = "LspAttach",
-        opts = {},
-    },
-})
+		{ -- Autocompletion
+			"saghen/blink.cmp",
+			event = "VimEnter",
+			version = "1.*",
+			dependencies = require("user.plugins.blink.blink_config").dep,
+			opts = require("user.plugins.blink.blink_config").opts,
+		},
+		{
+			"rachartier/tiny-code-action.nvim",
+			dependencies = {
+				{ "nvim-lua/plenary.nvim" },
+				{ "nvim-telescope/telescope.nvim" },
+				{ "ibhagwan/fzf-lua" },
+				{
+					"folke/snacks.nvim",
+					opts = {
+						terminal = {},
+					},
+				},
+			},
+			event = "LspAttach",
+			opts = {},
+		},
+	}
+)

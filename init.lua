@@ -17,3 +17,4 @@ require("user/plugins/plugins_config")
 -- Now load options and keymaps which may depend on plugins
 require("user/options")
 require("user/keymaps")
+require("user/lsp_overrides")
