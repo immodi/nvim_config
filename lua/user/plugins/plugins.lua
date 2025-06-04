@@ -16,10 +16,38 @@ return require("lazy").setup(
         },
 
         -- Fuzzy finder
-        {
+        -- {
+        -- 	"nvim-telescope/telescope.nvim",
+        -- 	tag = "0.1.8",
+        -- 	dependencies = { "nvim-lua/plenary.nvim" },
+        -- },
+
+        { -- Fuzzy Finder (files, lsp, etc)
             "nvim-telescope/telescope.nvim",
-            tag = "0.1.8",
-            dependencies = { "nvim-lua/plenary.nvim" },
+            event = "VimEnter",
+            dependencies = {
+                "nvim-lua/plenary.nvim",
+                { -- If encountering errors, see telescope-fzf-native README for installation instructions
+                    "nvim-telescope/telescope-fzf-native.nvim",
+
+                    -- `build` is used to run some command when the plugin is installed/updated.
+                    -- This is only run then, not every time Neovim starts up.
+                    build = "make",
+
+                    -- `cond` is a condition used to determine whether this plugin should be
+                    -- installed and loaded.
+                    cond = function()
+                        return vim.fn.executable("make") == 1
+                    end,
+                },
+                { "nvim-telescope/telescope-ui-select.nvim" },
+
+                -- Useful for getting pretty icons, but requires a Nerd Font.
+                {
+                    "nvim-tree/nvim-web-devicons",
+                    enabled = vim.g.have_nerd_font,
+                },
+            },
         },
 
         -- Treesitter
@@ -78,6 +106,7 @@ return require("lazy").setup(
             dependencies = require("user.plugins.blink.blink_config").dep,
             opts = require("user.plugins.blink.blink_config").opts,
         },
+
         {
             "rachartier/tiny-code-action.nvim",
             dependencies = {
@@ -93,6 +122,16 @@ return require("lazy").setup(
             },
             event = "LspAttach",
             opts = {},
+        },
+
+        {
+            "numToStr/Comment.nvim",
+            dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+            config = function()
+                require("Comment").setup({
+                    pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+                })
+            end,
         },
     }
 )

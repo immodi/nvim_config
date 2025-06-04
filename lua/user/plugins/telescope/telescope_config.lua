@@ -1,12 +1,12 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
 
-telescope.setup({
+require("telescope").setup({
 	defaults = {
 		mappings = {
 			i = {
 				["<CR>"] = function(prompt_bufnr)
-					-- Save all modified buffers BEFORE switching
+					-- save buffers before selecting
 					for _, buf in ipairs(vim.api.nvim_list_bufs()) do
 						if
 							vim.api.nvim_buf_is_loaded(buf)
@@ -14,7 +14,6 @@ telescope.setup({
 							and vim.bo[buf].buftype == ""
 							and vim.api.nvim_buf_get_name(buf) ~= ""
 						then
-							-- Use pcall to safely save each buffer
 							pcall(function()
 								vim.api.nvim_buf_call(buf, function()
 									vim.cmd("write")
@@ -27,4 +26,13 @@ telescope.setup({
 			},
 		},
 	},
+	extensions = {
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown(),
+		},
+	},
 })
+
+-- Enable Telescope extensions if they are installed
+pcall(require("telescope").load_extension, "fzf")
+pcall(require("telescope").load_extension, "ui-select")
