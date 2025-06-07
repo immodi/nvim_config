@@ -10,6 +10,7 @@ treesitterConfig.setup({
 		"typescript",
 		"css",
 		"tsx",
+		"svelte",
 	},
 	highlight = {
 		enable = true,
