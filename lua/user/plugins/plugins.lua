@@ -15,6 +15,9 @@ return require("lazy").setup(
             dependencies = { "nvim-tree/nvim-web-devicons" },
         },
 
+        -- Harpoon
+        require("user.plugins.harpoon.harpoon_import"),
+
         -- Fuzzy finder
         -- {
         -- 	"nvim-telescope/telescope.nvim",

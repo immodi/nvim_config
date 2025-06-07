@@ -1,4 +1,6 @@
 local builtin = require("telescope.builtin")
+local harpoonUI = require("harpoon.ui")
+local harpoonMark = require("harpoon.mark")
 
 -- Leader key
 vim.g.mapleader = " "
@@ -79,3 +81,31 @@ vim.keymap.set("v", "<leader>/", function()
 	vim.api.nvim_feedkeys(esc, "nx", false)
 	require("Comment.api").toggle.linewise(vim.fn.visualmode())
 end, { desc = "Toggle comment on selection" })
+
+-- Harpoon
+-- toggle main menu
+vim.keymap.set("n", "<leader>h", function()
+	harpoonUI.toggle_quick_menu()
+end, { desc = "Toggle Harpoon Quick Menu" })
+
+-- add current file to harpoon
+vim.keymap.set("n", "<leader>hc", function()
+	harpoonMark.add_file()
+end, { desc = "Add current file to harpoon" })
+
+-- nav to file by number
+for i = 1, 4 do
+	vim.keymap.set("n", "<leader>" .. i, function()
+		harpoonUI.nav_file(i)
+	end, { desc = "Navigate to file number " .. i .. " in harpoon" })
+end
+
+-- Map leader + [ to nav_prev()
+vim.keymap.set("n", "<leader>[", function()
+	harpoonUI.nav_prev()
+end, { desc = "Navigate to previous harpoon mark" })
+
+-- Map leader + ] to nav_next()
+vim.keymap.set("n", "<leader>]", function()
+	harpoonUI.nav_next()
+end, { desc = "Navigate to next harpoon mark" })
