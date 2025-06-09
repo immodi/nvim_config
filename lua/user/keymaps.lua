@@ -5,6 +5,12 @@ local harpoonMark = require("harpoon.mark")
 -- Leader key
 vim.g.mapleader = " "
 
+-- Handle typos for writing and quiting
+vim.api.nvim_create_user_command("W", "w", {})
+vim.api.nvim_create_user_command("Wq", "wq", {})
+vim.api.nvim_create_user_command("WQ", "wq", {})
+vim.api.nvim_create_user_command("Q", "q", {})
+
 -- jj to escape insert mode
 vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode with jj" })
 
@@ -109,3 +115,9 @@ end, { desc = "Navigate to previous harpoon mark" })
 vim.keymap.set("n", "<leader>]", function()
 	harpoonUI.nav_next()
 end, { desc = "Navigate to next harpoon mark" })
+
+-- Reload current LSP
+-- vim.keymap.set("n", "<leader>lr", function()
+--     vim.lsp.stop_client(vim.lsp.get_clients())
+--     vim.cmd("edit")
+-- end, { desc = "Reload LSP" })
