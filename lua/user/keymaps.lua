@@ -5,6 +5,11 @@ local harpoonMark = require("harpoon.mark")
 -- Leader key
 vim.g.mapleader = " "
 
+-- stop ctrl + z from suspending nvim
+vim.keymap.set("n", "<C-z>", "<nop>")
+vim.keymap.set("v", "<C-z>", "<nop>")
+vim.keymap.set("i", "<C-z>", "<nop>")
+
 -- Handle typos for writing and quiting
 vim.api.nvim_create_user_command("W", "w", {})
 vim.api.nvim_create_user_command("Wq", "wq", {})
