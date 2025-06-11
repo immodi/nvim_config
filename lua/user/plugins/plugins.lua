@@ -18,13 +18,6 @@ return require("lazy").setup(
 		-- Harpoon
 		require("user.plugins.harpoon.harpoon_import"),
 
-		-- Fuzzy finder
-		-- {
-		-- 	"nvim-telescope/telescope.nvim",
-		-- 	tag = "0.1.8",
-		-- 	dependencies = { "nvim-lua/plenary.nvim" },
-		-- },
-
 		{ -- Fuzzy Finder (files, lsp, etc)
 			"nvim-telescope/telescope.nvim",
 			event = "VimEnter",
@@ -104,10 +97,12 @@ return require("lazy").setup(
 
 		{ -- Autocompletion
 			"saghen/blink.cmp",
+			priority = 1000,
 			event = "VimEnter",
 			version = "1.*",
 			dependencies = require("user.plugins.blink.blink_config").dep,
 			opts = require("user.plugins.blink.blink_config").opts,
+			config = require("user.plugins.blink.blink_config").config,
 		},
 
 		{
@@ -139,7 +134,7 @@ return require("lazy").setup(
 		{
 			"mg979/vim-visual-multi",
 			branch = "master",
-			init = require("user.plugins.multicursor.multicursor"),
+			init = require("user.plugins.multicursor.multicursor").init,
 		},
 	}
 )
