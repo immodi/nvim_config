@@ -1,5 +1,4 @@
 local M = {}
-
 M.dep = {
 	{
 		"L3MON4D3/LuaSnip",
@@ -22,7 +21,6 @@ M.dep = {
 	},
 	"folke/lazydev.nvim",
 }
-
 M.opts = {
 	keymap = { preset = "enter" },
 	appearance = { nerd_font_variant = "mono" },
@@ -39,12 +37,10 @@ M.opts = {
 	fuzzy = { implementation = "lua" },
 	signature = { enabled = true },
 }
-
 -- Add this config function to handle VM conflicts
 M.config = function(_, opts)
 	local blink = require("blink.cmp")
 	blink.setup(opts)
-
 	-- Fix vim-visual-multi breaking blink.cmp keys
 	vim.api.nvim_create_autocmd("User", {
 		pattern = "visual_multi_exit",
@@ -61,7 +57,6 @@ M.config = function(_, opts)
 						return ""
 					end
 				end, { expr = true, replace_keycodes = false })
-
 				-- Force re-setup blink's Up arrow mapping
 				vim.keymap.set("i", "<Up>", function()
 					if blink.is_visible() then
@@ -73,7 +68,6 @@ M.config = function(_, opts)
 						return ""
 					end
 				end, { expr = true, replace_keycodes = false })
-
 				-- Force re-setup blink's Down arrow mapping
 				vim.keymap.set("i", "<Down>", function()
 					if blink.is_visible() then
@@ -85,19 +79,16 @@ M.config = function(_, opts)
 						return ""
 					end
 				end, { expr = true, replace_keycodes = false })
-
-				-- Force re-setup blink's Tab mapping
+				-- FIXED: Force re-setup blink's Tab mapping to ONLY insert 4 spaces
 				vim.keymap.set("i", "<Tab>", function()
 					if blink.is_visible() then
 						blink.select_next()
 						return ""
 					else
-						-- Send actual Tab key press
-						vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
-						return ""
+						-- CHANGED: Return 4 spaces directly instead of using feedkeys
+						return "    "
 					end
 				end, { expr = true, replace_keycodes = false })
-
 				-- Force re-setup blink's Shift+Tab mapping
 				vim.keymap.set("i", "<S-Tab>", function()
 					if blink.is_visible() then
@@ -113,5 +104,4 @@ M.config = function(_, opts)
 		end,
 	})
 end
-
 return M
