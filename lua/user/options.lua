@@ -11,6 +11,7 @@ vim.o.updatetime = 1000
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+vim.opt.softtabstop = 4 -- Added for proper backspace behavior
 vim.opt.smartindent = false
 
 -- Search
@@ -24,6 +25,10 @@ vim.opt.termguicolors = true
 vim.opt.cursorline = true
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
+
+-- Disable wildmenu tab completion to prevent Tab from jumping around in command mode
+vim.opt.wildmenu = false
+vim.opt.wildmode = ""
 
 vim.cmd([[colorscheme tokyonight-storm]])
 
