@@ -136,5 +136,13 @@ return require("lazy").setup(
 			branch = "master",
 			init = require("user.plugins.multicursor.multicursor").init,
 		},
+		{
+			"Exafunction/windsurf.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"hrsh7th/nvim-cmp",
+			},
+			config = require("user.plugins.codeium.codeium").setup,
+		},
 	}
 )
