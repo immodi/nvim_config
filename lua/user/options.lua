@@ -35,15 +35,15 @@ vim.cmd([[colorscheme tokyonight-storm]])
 -- Clipboard
 vim.opt.clipboard = "unnamedplus"
 
-vim.lsp.enable({
-	"lua_ls", -- Lua (lua-language-server)
-	"pyright", -- Python
-	"html", -- HTML
-	"templ", -- Templ (templ)
-	"tsserver", -- JavaScript/TypeScript (typescript-language-server)
-	"tailwindcss", -- Tailwind CSS
-	"cssls", -- CSS (css-lsp)
-	"eslint", -- ESLint
-	"gopls", -- Go
-	"kotlin",
-})
+-- vim.lsp.enable({
+--     "lua_ls",   -- Lua (lua-language-server)
+--     "pyright",  -- Python
+--     "html",     -- HTML
+--     "templ",    -- Templ (templ)
+--     "tsserver", -- JavaScript/TypeScript (typescript-language-server)
+--     "tailwindcss", -- Tailwind CSS
+--     "cssls",    -- CSS (css-lsp)
+--     "eslint",   -- ESLint
+--     "gopls",    -- Go
+--     "kotlin",
+-- })

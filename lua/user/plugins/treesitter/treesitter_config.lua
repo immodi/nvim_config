@@ -12,6 +12,7 @@ treesitterConfig.setup({
         "tsx",
         "svelte",
         "kotlin",
+        "c_sharp",
     },
     highlight = {
         enable = true,
