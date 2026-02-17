@@ -84,7 +84,9 @@ return require("lazy").setup(
 				-- Allows extra capabilities provided by blink.cmp
 				"saghen/blink.cmp",
 			},
-			config = require("user.plugins.nvim_lsp.nvim_lsp_config").setup,
+			config = function()
+				require("user.plugins.nvim_lsp.nvim_lsp_config").setup()
+			end,
 		},
 
 		{ -- Autoformat
@@ -136,13 +138,22 @@ return require("lazy").setup(
 			branch = "master",
 			init = require("user.plugins.multicursor.multicursor").init,
 		},
-		{
-			"Exafunction/windsurf.nvim",
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-				"hrsh7th/nvim-cmp",
-			},
-			config = require("user.plugins.codeium.codeium").setup,
-		},
+		-- {
+		--     "Exafunction/windsurf.nvim",
+		--     dependencies = {
+		--         "nvim-lua/plenary.nvim",
+		--         "hrsh7th/nvim-cmp",
+		--     },
+		--     config = function()
+		--         require("codeium").setup({
+		--             bin_path = vim.fn.stdpath("data") .. "/windsurf/bin",
+		--             enable_cmp_source = true,
+		--             virtual_text = {
+		--                 enabled = true,
+		--                 idle_delay = 100,
+		--             },
+		--         })
+		--     end,
+		-- },
 	}
 )
