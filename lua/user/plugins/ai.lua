@@ -1,68 +1,53 @@
--- AI inline completion (ghost text), similar to Continue's tab-autocomplete.
--- Continue itself has no Neovim plugin, so this uses minuet-ai.nvim with the same
--- default setup Continue recommends: a local Ollama model doing fill-in-the-middle.
+-- AI inline completion (ghost text), powered by Windsurf/Codeium.
+-- Uses neocodeium, a free Codeium completion plugin.
 --
 -- Setup:
---   ollama pull qwen2.5-coder:1.5b      (or :7b if your machine can take it)
---
--- To use a hosted model instead, change `provider` / `provider_options`
--- (supports openai, claude, gemini, codestral, ...): see :help minuet
-
+--   Run `:NeoCodeium auth` once to log in and save the API token.
+--   Use `:NeoCodeium toggle` to enable/disable on the fly.
 return {
-	"milanglacier/minuet-ai.nvim",
-	event = "InsertEnter",
+	"monkoose/neocodeium",
+	event = "VeryLazy",
 	opts = {
-		provider = "openai_fim_compatible",
-		n_completions = 1, -- one suggestion is enough for local models
-		request_timeout = 10,
-		context_window = 256, -- start small to reduce prompt processing
-
-		provider_options = {
-			openai_fim_compatible = {
-				name = "Llama.cpp",
-				api_key = "TERM",
-				end_point = "http://localhost:8080/v1/completions",
-				model = "Qwen2.5-Coder-0.5B-Q8_0.gguf",
-				stream = true,
-
-				template = {
-					prompt = function(before, after, _)
-						return "<|fim_prefix|>" .. before .. "<|fim_suffix|>" .. after .. "<|fim_middle|>"
-					end,
-					suffix = false,
-				},
-
-				optional = {
-					max_tokens = 64,
-					top_p = 0.9,
-				},
-			},
-		},
-
-		virtualtext = {
-			-- Show suggestions automatically while typing in these filetypes
-			auto_trigger_ft = {
-				"lua",
-				"python",
-				"javascript",
-				"typescript",
-				"javascriptreact",
-				"typescriptreact",
-				"html",
-				"css",
-				"templ",
-				"svelte",
-				"kotlin",
-				"cs",
-				"go",
-			},
-			keymap = {
-				accept = "<A-a>", -- accept whole suggestion
-				accept_line = "<A-l>", -- accept one line
-				prev = "<A-[>", -- previous suggestion (also triggers manually)
-				next = "<A-]>", -- next suggestion (also triggers manually)
-				dismiss = "<A-e>",
-			},
-		},
+		-- Lowest-latency settings.
+		-- `true` would batch keystrokes and delay suggestions; keep it off.
+		debounce = false,
+		-- Context lines parsed from *other* loaded buffers. Lower = less parsing
+		-- and a smaller request payload = snappier. The current buffer is always
+		-- fully parsed. Set to 0 for the fastest, lowest-quality option.
+		max_lines = 1000,
+		-- Set to true to collapse multi-line suggestions to a single line, which
+		-- plays nicer with the blink.cmp menu.
+		-- single_line = { enabled = true },
 	},
+	config = function(_, opts)
+		local neocodeium = require("neocodeium")
+		neocodeium.setup(opts)
+
+		-- Accept the whole suggestion with <Tab><Tab>. When no ghost text is visible
+		-- the two Tabs behave normally (or move through the completion menu if it is
+		-- open).
+		vim.keymap.set("i", "<Tab><Tab>", function()
+			if neocodeium.visible() then
+				neocodeium.accept()
+				return ""
+			end
+			local blink = require("blink.cmp")
+			if blink.is_visible() then
+				blink.select_next()
+				blink.select_next()
+				return ""
+			end
+			return "<Tab><Tab>"
+		end, { expr = true, replace_keycodes = true, desc = "AI: accept suggestion (Tab Tab)" })
+
+		vim.keymap.set("i", "<A-l>", neocodeium.accept_line, { desc = "AI: accept line" })
+		vim.keymap.set("i", "<A-w>", neocodeium.accept_word, { desc = "AI: accept word" })
+		vim.keymap.set("i", "<A-]>", function()
+			neocodeium.cycle_or_complete(1)
+		end, { desc = "AI: next suggestion" })
+		vim.keymap.set("i", "<A-[>", function()
+			neocodeium.cycle_or_complete(-1)
+		end, { desc = "AI: previous suggestion" })
+		vim.keymap.set("i", "<A-e>", neocodeium.clear, { desc = "AI: dismiss suggestion" })
+	end,
 }

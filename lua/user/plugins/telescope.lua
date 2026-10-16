@@ -17,6 +17,7 @@ return {
 		{ "<leader><leader>", function() require("telescope.builtin").find_files() end, desc = "Find files" },
 		{ "<leader>lg", function() require("telescope.builtin").live_grep() end, desc = "Live grep" },
 		{ "<leader>fb", function() require("telescope.builtin").buffers() end, desc = "Buffers" },
+		{ "<leader>fk", function() require("telescope.builtin").keymaps() end, desc = "Search all keymaps" },
 		{ "<leader>fh", function() require("telescope.builtin").help_tags() end, desc = "Help tags" },
 	},
 	config = function()

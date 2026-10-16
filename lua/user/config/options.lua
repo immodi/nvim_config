@@ -35,3 +35,6 @@ opt.wildmode = ""
 
 -- Clipboard
 opt.clipboard = "unnamedplus"
+
+-- Time to wait for the next key of a multi-key mapping (e.g. Tab Tab, <leader>hc)
+opt.timeoutlen = 400

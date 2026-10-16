@@ -6,6 +6,7 @@ vim.g.maplocalleader = " "
 require("user.config.options")
 require("user.config.keymaps")
 require("user.config.autocmds")
+require("user.config.cheatsheet")
 require("user.config.diagnostics")
 
 -- Bootstrap lazy.nvim
